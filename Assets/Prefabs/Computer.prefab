@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5694532769315531512}
   - component: {fileID: 1261029998129311158}
+  - component: {fileID: 202610150003}
   m_Layer: 0
   m_Name: Computer
   m_TagString: Untagged
@@ -52,6 +53,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5592b25c44429b914438d9e820ae26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Computer
+  ComputerTask: {fileID: 202610150003}
+--- !u!114 &202610150003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057683460427819544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df7e23aafe343d2a686bbc62c44a50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Environment.ComputerTaskQueue
+  initializationTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000b, type: 2}
+  startupTasks:
+  - {fileID: 11400000, guid: b24e706c69624a31ae00000000000002, type: 2}
+  - {fileID: 11400000, guid: b24e706c69624a31ae00000000000003, type: 2}
+  - {fileID: 11400000, guid: b24e706c69624a31ae00000000000004, type: 2}
+  piratedGamesTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000005, type: 2}
+  openWorklogsTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000006, type: 2}
+  returnToDesktopTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000007, type: 2}
+  playVSGameTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000a, type: 2}
 --- !u!1001 &1440861543908505829
 PrefabInstance:
   m_ObjectHideFlags: 0

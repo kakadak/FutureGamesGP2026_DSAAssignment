@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
 namespace Environment.Tasks {
     public abstract class Task : ScriptableObject {
-       public abstract void Execute();
+        public abstract IEnumerator Execute(Computer computer);
     }
 }

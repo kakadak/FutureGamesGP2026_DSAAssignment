@@ -1,0 +1,108 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
+
+public class Enemy : MonoBehaviour
+{
+    public LVL exp;
+    public float speed = 3f;
+    public Sprite bad;
+    public Sprite good;
+    public Sprite dead;
+    private Transform playerTransform;
+    private Spawn spawner;
+    private Character playerScript; 
+    public int hp = 1;
+    private bool tookDamage = false;
+    private float hitTimer = 0f;
+    private bool isDead = false;
+    public AudioSource Nee;
+
+    public void Init(LVL expRef, Spawn spawnerRef, Timer timRef, Character characterRef, AudioSource NeeRef)
+    {
+        Nee = NeeRef;
+        exp = expRef;
+        spawner = spawnerRef;
+        hp = timRef.enemyhp;
+        playerScript = characterRef;
+        playerTransform = playerScript.player.transform;
+    }
+
+    void Update()
+    {
+        if (!GameStateManager.Instance.IsPlaying() || isDead) 
+        {
+            return;
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, speed * Time.deltaTime);
+
+        if (!playerScript.isAttacking)
+        {
+            tookDamage = false;
+        }
+
+        if (hitTimer > 0f)
+        {
+            hitTimer -= Time.deltaTime;
+            if (hitTimer <= 0f)
+            {
+                GetComponent<Image>().sprite = good;
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (!GameStateManager.Instance.IsPlaying() || isDead) return;
+
+        if (other.CompareTag("Hit"))
+        {
+            if (playerScript.isAttacking && !tookDamage)
+            {
+                TakeDamage(playerScript.damage);
+            }
+        }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        hp -= damage;
+        tookDamage = true; 
+        GetComponent<Image>().sprite = bad;
+        hitTimer = 0.5f;
+
+        if (hp <= 0)
+        {
+            StartCoroutine(Die());
+        }
+    }
+
+    private IEnumerator Die()
+    {
+        isDead = true;
+        Nee.Play();
+
+        exp.kills += 1;
+        exp.experience += 20;
+        spawner.RemoveEnemy(gameObject);
+
+        GetComponent<Image>().sprite = dead;
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        float timer = 1f;
+        while (timer > 0f)
+        {
+            
+            
+            timer -= Time.deltaTime;
+            
+            yield return null;
+        }
+        
+        Destroy(gameObject);
+    }
+}

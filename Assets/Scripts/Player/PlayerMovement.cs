@@ -22,6 +22,7 @@ namespace Player {
         private float interactionRange = 5f;
 
         private Vector2 movementInput = Vector2.zero;
+        private bool movementEnabled = true;
 
         private void Awake() {
             if(!animator) {
@@ -41,11 +42,13 @@ namespace Player {
         }
 
         private void OnMove(InputAction.CallbackContext context) {
+            if (!movementEnabled) return;
             movementInput = context.ReadValue<Vector2>();
             animator.SetBool("bIsMoving", movementInput != Vector2.zero);
         }
 
         private void OnInteract(InputAction.CallbackContext context) {
+            if (!movementEnabled) return;
             Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, interactionRange);
             IInteractable interactable = hit.collider?.gameObject.GetComponentInParent<IInteractable>();
             if(interactable != null) {
@@ -54,9 +57,17 @@ namespace Player {
         }
 
         private void Update() {
+            if (!movementEnabled) return;
             transform.position += (new Vector3(movementInput.x, 0f, movementInput.y)) * (movementSpeed * Time.deltaTime);
         }
 
+        public void SetMovementEnabled(bool enabled) {
+            movementEnabled = enabled;
+            if (!enabled) {
+                movementInput = Vector2.zero;
+                if (animator != null) animator.SetBool("bIsMoving", false);
+            }
+        }
 
         private void OnEnable() {
             moveAction.action.Enable();
