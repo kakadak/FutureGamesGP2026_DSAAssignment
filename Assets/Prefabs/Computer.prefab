@@ -53,6 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5592b25c44429b914438d9e820ae26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Computer
+  workersJson: {fileID: 4900000, guid: 0edb1fc717f20984282218034c74b3db, type: 3}
+  workers: []
   ComputerTask: {fileID: 202610150003}
 --- !u!114 &202610150003
 MonoBehaviour:
@@ -73,8 +75,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b24e706c69624a31ae00000000000004, type: 2}
   piratedGamesTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000005, type: 2}
   openWorklogsTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000006, type: 2}
+  displayWorklogPageTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000e, type: 2}
+  leftWorklogPageTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000f, type: 2}
+  rightWorklogPageTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000010, type: 2}
+  showWorkerDataTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000011, type: 2}
+  returnToWorklogsTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000012, type: 2}
   returnToDesktopTask: {fileID: 11400000, guid: b24e706c69624a31ae00000000000007, type: 2}
   playVSGameTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000a, type: 2}
+  loadEmployeesTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000c, type: 2}
+  readWorkersJsonTask: {fileID: 11400000, guid: b24e706c69624a31ae0000000000000d, type: 2}
 --- !u!1001 &1440861543908505829
 PrefabInstance:
   m_ObjectHideFlags: 0

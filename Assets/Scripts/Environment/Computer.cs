@@ -15,6 +15,11 @@ namespace Environment {
         [Header("Task queue")]
         public ComputerTaskQueue ComputerTask;
 
+        [Header("Workers")]
+        [SerializeField] private TextAsset workersJson;
+        [SerializeField] private Worker[] workers;
+        private string workersJsonText;
+
         [Header("Turning ON")]
         [SerializeField] private TextMeshProUGUI logging;
         [SerializeField] private GameObject loading;
@@ -33,6 +38,7 @@ namespace Environment {
 
         [Header("Workers Logs")]
         [SerializeField] private GameObject Worklogs;
+        [SerializeField] private GameObject dataCanvas;
 
         [Header("Workers Logs UI")]
         [SerializeField] private GameObject[] workloggerObjects = new GameObject[9];
@@ -49,7 +55,19 @@ namespace Environment {
         public GameObject DesktopScreen => Deskop;
         public GameObject PiratedGamesScreen => PiratedGames;
         public GameObject WorklogsScreen => Worklogs;
+        public GameObject DataCanvas => dataCanvas;
         public GameObject[] WorklogIcons => workloggerObjects;
+        public TextAsset WorkersJson => workersJson;
+        public string WorkersJsonText => workersJsonText;
+        public Worker[] Workers => workers;
+
+        public void SetWorkersJsonText(string json) {
+            workersJsonText = json;
+        }
+
+        public void SetWorkers(Worker[] loadedWorkers) {
+            workers = loadedWorkers;
+        }
 
         private void Start() {
             if(character != null)
@@ -129,6 +147,22 @@ namespace Environment {
 
         public void Worklog() {
             ComputerTask.EnqueueOpenWorklogsTask(this);
+        }
+
+        public void Left() {
+            ComputerTask.EnqueueLeftWorklogPageTask(this);
+        }
+
+        public void Right() {
+            ComputerTask.EnqueueRightWorklogPageTask(this);
+        }
+
+        public void OpenWorkerData(int iconIndex) {
+            ComputerTask.EnqueueWorkerDataTask(this, iconIndex);
+        }
+
+        public void BackFromDataCanvas() {
+            ComputerTask.EnqueueReturnToWorklogsTask(this);
         }
 
         public void ReturnDeskop() {

@@ -8,6 +8,7 @@ public class Cameras : MonoBehaviour
 
     private void Awake()
     {
+        CamChange(0);
         comand = this;
     }
 

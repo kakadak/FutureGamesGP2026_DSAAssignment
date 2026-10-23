@@ -12,6 +12,7 @@ namespace Environment.Tasks {
             computer.DesktopScreen.SetActive(false);
             computer.PiratedGamesScreen.SetActive(false);
             computer.WorklogsScreen.SetActive(false);
+            computer.DataCanvas.SetActive(false);
             yield break;
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Environment.Tasks;
 using UnityEngine;
 
@@ -8,11 +9,19 @@ namespace Environment {
         [SerializeField] private Task initializationTask;
         [SerializeField] private Task[] startupTasks;
         [SerializeField] private Task piratedGamesTask;
+        [SerializeField] private Task readWorkersJsonTask;
+        [SerializeField] private Task loadEmployeesTask;
         [SerializeField] private Task openWorklogsTask;
+        [SerializeField] private Task displayWorklogPageTask;
+        [SerializeField] private Task leftWorklogPageTask;
+        [SerializeField] private Task rightWorklogPageTask;
+        [SerializeField] private Task showWorkerDataTask;
+        [SerializeField] private Task returnToWorklogsTask;
         [SerializeField] private Task returnToDesktopTask;
         [SerializeField] private Task playVSGameTask;
 
-        private readonly global::Environment.Queue<Task> tasks = new global::Environment.Queue<Task>();
+        private readonly Environment.Queue<Task> tasks = new Environment.Queue<Task>();
+        private readonly Queue<int> workerIconIndexes = new Queue<int>();
         private Computer computer;
         private Coroutine queueCoroutine;
 
@@ -38,7 +47,24 @@ namespace Environment {
 
         //Shortlinks :D
         public void EnqueuePiratedGamesTask(Computer targetComputer) => EnqueueAndStart(piratedGamesTask, targetComputer);
-        public void EnqueueOpenWorklogsTask(Computer targetComputer) => EnqueueAndStart(openWorklogsTask, targetComputer);
+        public void EnqueueOpenWorklogsTask(Computer targetComputer) {
+            computer = targetComputer;
+            Enqueue(readWorkersJsonTask);
+            Enqueue(loadEmployeesTask);
+            Enqueue(displayWorklogPageTask);
+            Enqueue(openWorklogsTask);
+            StartQueueIfNeeded();
+        }
+        public void EnqueueLeftWorklogPageTask(Computer targetComputer) => EnqueueAndStart(leftWorklogPageTask, targetComputer);
+        public void EnqueueRightWorklogPageTask(Computer targetComputer) => EnqueueAndStart(rightWorklogPageTask, targetComputer);
+        public void EnqueueWorkerDataTask(Computer targetComputer, int iconIndex) {
+            computer = targetComputer;
+            workerIconIndexes.Enqueue(iconIndex);
+            Enqueue(showWorkerDataTask);
+            StartQueueIfNeeded();
+        }
+        public int DequeueWorkerIconIndex() => workerIconIndexes.Dequeue();
+        public void EnqueueReturnToWorklogsTask(Computer targetComputer) => EnqueueAndStart(returnToWorklogsTask, targetComputer);
         public void EnqueueReturnToDesktopTask(Computer targetComputer) => EnqueueAndStart(returnToDesktopTask, targetComputer);
         public void EnqueuePlayVSGameTask(Computer targetComputer) => EnqueueAndStart(playVSGameTask, targetComputer);
 
@@ -99,6 +125,7 @@ namespace Environment {
                 StopCoroutine(queueCoroutine);
             queueCoroutine = null;
             tasks.Clear();
+            workerIconIndexes.Clear();
             ActiveTask = null;
             IsRunning = false;
         }

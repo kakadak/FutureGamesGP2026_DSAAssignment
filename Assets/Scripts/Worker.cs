@@ -1,6 +1,7 @@
-using UnityEngine;
+using System;
 
-public class Worker : MonoBehaviour
+[Serializable]
+public class Worker
 {
     public string Name;
     public string ID;
