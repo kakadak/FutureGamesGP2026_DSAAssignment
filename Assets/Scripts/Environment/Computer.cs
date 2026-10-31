@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Environment.Tasks;
+using TMPro;
 using UnityEngine;
 
 namespace Environment {
@@ -9,8 +10,28 @@ namespace Environment {
         [SerializeField] private Task camTask;
         [SerializeField] private Task loadTask;
         [SerializeField] private Task enterTask;
+        [SerializeField] private Task worklogTask;
+
+        [Header("Data Storage")]
+        [SerializeField] private Worker[] loadedWorkers;
+
+        [Header("Worklogs")]
+        [SerializeField] private GameObject worklogsSystem;
+        [SerializeField] TextMeshProUGUI Name;
+        [SerializeField] TextMeshProUGUI ID;
+        [SerializeField] TextMeshProUGUI Clearance;
+        [SerializeField] TextMeshProUGUI Entrance;
+        [SerializeField] TextMeshProUGUI Exit;
+        [SerializeField] private int index = 0;
+
 
         private MyQueue<Task> computerQueue = new MyQueue<Task>();
+
+        public Worker[] WorkerArray;
+
+        public void SetWorkers(Worker[] workers) {
+            WorkerArray = workers;
+        }
 
         public void OnInteract() {
             computerQueue.Enqueue(testTask);
@@ -30,8 +51,42 @@ namespace Environment {
                 }
             }
         }
+
         public void Enter() {
             CamCore.Instance.SwitchToCamera(2);
+            computerQueue.Enqueue(worklogTask);
+            worklogsSystem.SetActive(true);
+            StartCoroutine(ProcessQueue());
+            index = 0;
+            Name.text = "Name: " + WorkerArray[index].Name;
+            ID.text = "ID: " + WorkerArray[index].EmployeeId.ToString();
+            Clearance.text = "Clearance: " + WorkerArray[index].HasEngineRoomClearance.ToString();
+            Entrance.text = "Entrance: " + WorkerArray[index].LastEntranceInEngineRoom;
+            Exit.text = "Exit: " + WorkerArray[index].LastExitFromEngineRoom;
         }
+        public void Left() {
+            if(index != 0) {
+                index -= 1;
+                Name.text = "Name: " + WorkerArray[index].Name;
+                ID.text = "ID: " + WorkerArray[index].EmployeeId.ToString();
+                Clearance.text = "Clearance: " + WorkerArray[index].HasEngineRoomClearance.ToString();
+                Entrance.text = "Entrance: " + WorkerArray[index].LastEntranceInEngineRoom;
+                Exit.text = "Exit: " + WorkerArray[index].LastExitFromEngineRoom;
+            }
+        }
+        public void Right() {
+            if(index != WorkerArray.Length - 1) {
+                index += 1;
+                Name.text = "Name: " + WorkerArray[index].Name;
+                ID.text = "ID: " + WorkerArray[index].EmployeeId.ToString();
+                Clearance.text = "Clearance: " + WorkerArray[index].HasEngineRoomClearance.ToString();
+                Entrance.text = "Entrance: " + WorkerArray[index].LastEntranceInEngineRoom;
+                Exit.text = "Exit: " + WorkerArray[index].LastExitFromEngineRoom;
+
+
+            }
+
+        }
+
     }
 }

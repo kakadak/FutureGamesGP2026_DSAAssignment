@@ -14,7 +14,18 @@ namespace Environment.Tasks {
         }
 
         private IEnumerator AnimateLoadingRoutine() {
-            TextMeshProUGUI loadingText = FindFirstObjectByType<TextMeshProUGUI>(FindObjectsInactive.Include);
+            TextMeshProUGUI loadingText = null;
+            TextMeshProUGUI[] allTexts = FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+            foreach(var txt in allTexts) {
+                if(txt.gameObject.name == "Loading") { 
+                    loadingText = txt;
+                    break;
+                }
+            }
+
+            if(loadingText == null) yield break;
+
             loadingText.gameObject.SetActive(true);
 
             for(int i = 0; i < 3; i++) {
