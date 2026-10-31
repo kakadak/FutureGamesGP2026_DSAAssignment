@@ -5,24 +5,33 @@ namespace Environment.Tasks {
     public class QuickSortWorkersIDTask : Task {
         public override void Execute() {
             Computer computer = FindFirstObjectByType<Computer>();
-            if(computer == null || computer.WorkerArray == null || computer.WorkerArray.Length == 0) return;
-
-            QuickSortID(computer.WorkerArray, 0, computer.WorkerArray.Length - 1);
+            QuickSortID(computer.WorkerArray, 0, computer.WorkerArray.Length - 1, computer);
             computer.Left();
         }
 
-        private void QuickSortID(Worker[] array, int low, int high) {
+        private void QuickSortID(Worker[] array, int low, int high, Computer computer) {
             if(low >= high) return;
 
             int pivot = array[high].EmployeeId;
             int i = low - 1;
 
             for(int j = low; j < high; j++) {
-                if(array[j].EmployeeId < pivot) {
-                    i++;
-                    Worker temp = array[i];
-                    array[i] = array[j];
-                    array[j] = temp;
+                if(computer.LowHigh.isOn) {
+                    if(array[j].EmployeeId < pivot) {
+                        i++;
+                        Worker temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+                else {
+                    if(array[j].EmployeeId > pivot) {
+                        i++;
+                        Worker temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+
                 }
             }
 
@@ -32,8 +41,8 @@ namespace Environment.Tasks {
 
             int pivotIndex = i + 1;
 
-            QuickSortID(array, low, pivotIndex - 1);
-            QuickSortID(array, pivotIndex + 1, high);
+            QuickSortID(array, low, pivotIndex - 1, computer);
+            QuickSortID(array, pivotIndex + 1, high, computer);
         }
     }
 }

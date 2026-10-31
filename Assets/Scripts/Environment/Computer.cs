@@ -2,6 +2,7 @@
 using Environment.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Environment {
     public class Computer : MonoBehaviour, IInteractable {
@@ -29,6 +30,9 @@ namespace Environment {
         [SerializeField] private Task Namesort;
         [SerializeField] private Task Entrancesort;
         [SerializeField] private Task Exitsort;
+        [SerializeField] public Toggle LowHigh;
+
+        
 
 
         private MyQueue<Task> computerQueue = new MyQueue<Task>();
