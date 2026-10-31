@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9435bd0c79a35c74284e60fefcc76f90, type: 3}
   m_Name: WorklogTask
   m_EditorClassIdentifier: Assembly-CSharp::Environment.Tasks.WorklogTask
-  jsonFile: {fileID: 0}
+  jsonFile: {fileID: 4900000, guid: 828e425d8e4e07447858069b29c6741d, type: 3}

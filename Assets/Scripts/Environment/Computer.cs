@@ -24,6 +24,12 @@ namespace Environment {
         [SerializeField] TextMeshProUGUI Exit;
         [SerializeField] private int index = 0;
 
+        [Header("Sorts")]
+        [SerializeField] private Task IDsort;
+        [SerializeField] private Task Namesort;
+        [SerializeField] private Task Entrancesort;
+        [SerializeField] private Task Exitsort;
+
 
         private MyQueue<Task> computerQueue = new MyQueue<Task>();
 
@@ -82,11 +88,35 @@ namespace Environment {
                 Clearance.text = "Clearance: " + WorkerArray[index].HasEngineRoomClearance.ToString();
                 Entrance.text = "Entrance: " + WorkerArray[index].LastEntranceInEngineRoom;
                 Exit.text = "Exit: " + WorkerArray[index].LastExitFromEngineRoom;
-
-
             }
 
         }
+        public void Sort() {
+            CamCore.Instance.SwitchToCamera(3);
+        }
+        public void NameSorting() {
+            computerQueue.Enqueue(Namesort);
+        }
+        public void IDSorting() {
+            computerQueue.Enqueue(IDsort);
+        }
+        public void EntranceSorting() {
+            computerQueue.Enqueue(Entrancesort);
+        }
+        public void ExitSorting() {
+            computerQueue.Enqueue(Exitsort);
+        }
+        public void Back() {
+            CamCore.Instance.SwitchToCamera(2);
+            StartCoroutine(ProcessQueue());
+            index = 0;
+            Name.text = "Name: " + WorkerArray[index].Name;
+            ID.text = "ID: " + WorkerArray[index].EmployeeId.ToString();
+            Clearance.text = "Clearance: " + WorkerArray[index].HasEngineRoomClearance.ToString();
+            Entrance.text = "Entrance: " + WorkerArray[index].LastEntranceInEngineRoom;
+            Exit.text = "Exit: " + WorkerArray[index].LastExitFromEngineRoom;
+        }
+
 
     }
 }
