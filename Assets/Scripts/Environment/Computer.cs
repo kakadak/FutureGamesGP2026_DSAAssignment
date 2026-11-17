@@ -33,14 +33,75 @@ namespace Environment {
         [SerializeField] public Toggle LowHigh;
 
         
+        [Header("Search")]
+        [SerializeField] private Task SearchTask;
+        [SerializeField] public TMP_InputField SearchInput;
+        [SerializeField] public TMP_InputField SearchInput2;
+
+
 
 
         private MyQueue<Task> computerQueue = new MyQueue<Task>();
+        public Worker[] AllWorkers { get; private set; }
 
         public Worker[] WorkerArray;
 
         public void SetWorkers(Worker[] workers) {
+            AllWorkers = workers;
             WorkerArray = workers;
+        }
+
+        
+        public void SearchByDate() {
+            searching = true;
+            StartCoroutine(SearchTimer());
+            computerQueue.Enqueue(SearchTask);
+            StartCoroutine(ProcessQueue());
+        }
+
+        public void Restore() {
+            WorkerArray = AllWorkers;
+            Refresh();
+            CamCore.Instance.SwitchToCamera(2);
+            searching = false;
+        }
+
+        public void Results(Worker[] results) {
+            WorkerArray = results;
+            Refresh();
+            CamCore.Instance.SwitchToCamera(2);
+            searching = false;
+        }
+
+        private float timer;
+        private bool searching;
+
+        private IEnumerator SearchTimer() {
+            timer = 0f;
+            while(searching) {
+                timer += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            Debug.Log($"We did it in: {timer} s");
+        }
+
+        private void Refresh() {
+            index = 0;
+
+            if(WorkerArray == null || WorkerArray.Length == 0) {
+                Name.text = "Name: No results";
+                ID.text = "ID: -";
+                Clearance.text = "Clearance: -";
+                Entrance.text = "Entrance: -";
+                Exit.text = "Exit: -";
+                return;
+            }
+
+            Name.text = "Name: " + WorkerArray[index].Name;
+            ID.text = "ID: " + WorkerArray[index].EmployeeId.ToString();
+            Clearance.text = "Clearance: " + WorkerArray[index].HasEngineRoomClearance.ToString();
+            Entrance.text = "Entrance: " + WorkerArray[index].LastEntranceInEngineRoom;
+            Exit.text = "Exit: " + WorkerArray[index].LastExitFromEngineRoom;
         }
 
         public void OnInteract() {
@@ -97,6 +158,9 @@ namespace Environment {
         }
         public void Sort() {
             CamCore.Instance.SwitchToCamera(3);
+        }
+        public void Search() {
+            CamCore.Instance.SwitchToCamera(4);
         }
         public void NameSorting() {
             computerQueue.Enqueue(Namesort);

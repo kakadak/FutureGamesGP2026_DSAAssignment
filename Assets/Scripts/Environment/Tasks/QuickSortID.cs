@@ -23,6 +23,14 @@ namespace Environment.Tasks {
                         array[i] = array[j];
                         array[j] = temp;
                     }
+                    else if(array[j].EmployeeId == pivot) {
+                        if(string.Compare(array[j].Name, array[high].Name) < 0) {
+                            i++;
+                            Worker temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
+                    }
                 }
                 else {
                     if(array[j].EmployeeId > pivot) {
@@ -31,7 +39,15 @@ namespace Environment.Tasks {
                         array[i] = array[j];
                         array[j] = temp;
                     }
+                    else if(array[j].EmployeeId == pivot) {
+                        if(string.Compare(array[j].Name, array[high].Name) > 0) {
+                            i++;
+                            Worker temp = array[i];
+                            array[i] = array[j];
+                            array[j] = temp;
+                        }
 
+                    }
                 }
             }
 
