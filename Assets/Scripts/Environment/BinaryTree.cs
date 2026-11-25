@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
 public class BinaryTree {
@@ -18,8 +17,23 @@ public class BinaryTree {
     private Node root;
 
     public void Insert(Worker worker) {
-        string key = worker.LastEntranceInEngineRoom.Split('T')[0];
+        string key = worker.LastEntranceInEngineRoom;
         root = InsertRec(root, key, worker);
+    }
+
+    public void Insert(Worker[] workers) {
+        if(workers == null || workers.Length == 0) {
+            return;
+        }
+
+        int midIndex = workers.Length / 2;
+        Insert(workers[midIndex]);
+
+        for(int i = 0; i < workers.Length; i++) {
+            if(i != midIndex) {
+                Insert(workers[i]);
+            }
+        }
     }
 
     private Node InsertRec(Node current, string key, Worker worker) {
@@ -51,7 +65,6 @@ public class BinaryTree {
 
         return new Worker[0];
     }
-
 
     private Node SearchRec(Node current, string dateQuery) {
         if(current == null) {

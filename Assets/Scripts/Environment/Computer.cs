@@ -37,7 +37,7 @@ namespace Environment {
         [SerializeField] private Task SearchTask;
         [SerializeField] public TMP_InputField SearchInput;
         [SerializeField] public TMP_InputField SearchInput2;
-
+        [SerializeField] public TMP_Dropdown SearchModeDropdown;
 
 
 
